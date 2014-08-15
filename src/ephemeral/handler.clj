@@ -4,7 +4,7 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ephemeral.core :as ephemeral]
-            [lib-noir.response :as response]))
+            [noir.response :as response]))
 
 (defroutes app-routes
   (GET "/" [] (response/status 200 (response/json (ephemeral/info))))
@@ -13,13 +13,13 @@
        (let [message (ephemeral/lookup-message id)]
          (cond
           (nil? message) (response/status 404 "Not Found")
-          (response/status 200 (response/json message)))))
+          :else (response/status 200 (response/json message)))))
 
   (PUT "/message" {data :params}
        (let [id (ephemeral/create-message data)]
          (cond
           (nil? id) (response/status 400 "Bad Request")
-          (response/status 201 (response/json {:success true :id id})))))
+          :else (response/status 201 (response/json {:success true :id id})))))
 
   (route/not-found "Not Found"))
 

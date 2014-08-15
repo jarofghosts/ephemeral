@@ -1,10 +1,11 @@
 (ns ephemeral.db.core
-  (:use korma.core
-        [korma.db :only (defdb)]))
+  (:use [environ.core :only (env)])
+  (:use korma.core)
+  (:use korma.db))
 
-(defdb db (postgres {:db ephemeral
-                     :user ephemeral
-                     :password derpitydoo}))
+(defdb db (postgres {:db (env :eph-db-name)
+                     :user (env :eph-db-user)
+                     :password (env :eph-db-pass)}))
 
 (defentity accesses)
 

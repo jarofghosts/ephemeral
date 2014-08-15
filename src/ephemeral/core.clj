@@ -10,7 +10,7 @@
   (cond
    (nil? message) nil
 
-   (db/add-message (utils/create-uuid) message time views)))
+   :else (db/add-message (utils/create-uuid) message time views)))
 
 (defn log-access [id]
   "log an access to the message"
@@ -23,6 +23,6 @@
           (and (not (nil? views)) (>= (count accesses) views)) nil
           (and (not (nil? expire)) (utils/expired? expire)) nil
 
-          (do
-            (if-not (nil? views) (db/add-access id))
-            {:message message :id id}))))
+          :else (do
+                  (if-not (nil? views) (db/add-access id))
+                  {:message message :id id}))))
