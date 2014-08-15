@@ -1,6 +1,17 @@
 (ns ephemeral.utils
-  (:require [clj-time.format :as format-time]
+  (:require [clj-time.format :as f]
             [clj-time.core :as t]))
 
-(defn create-uuid
+(def formatter (f/formatters :basic-date-time))
+
+(defn create-uuid []
+  "create a random UUID"
   (str (java.util.UUID/randomUUID)))
+
+(defn now []
+  "return a date string for now"
+  (f/unparse formatter (t/now)))
+
+(defn expired? [date-time]
+  "determine if a message is expired"
+  (t/after? (t/now) (f/parse formatter date-time)))

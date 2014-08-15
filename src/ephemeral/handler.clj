@@ -1,12 +1,27 @@
 (ns ephemeral.handler
+  (:use [ring.middleware.json :only [wrap-json-params]])
   (:require [compojure.core :refer :all]
             [compojure.handler :as handler]
-            [compojure.route :as route]))
+            [compojure.route :as route]
+            [ephemeral.core :as ephemeral]
+            [lib-noir.response :as response]))
 
 (defroutes app-routes
-  (GET "/" [] "Hello World")
-  (route/resources "/")
+  (GET "/" [] (response/status 200 (response/json (ephemeral/info))))
+
+  (GET "/message/:id" [id]
+       (let [message (ephemeral/lookup-message id)]
+         (cond
+          (nil? message) (response/status 404 "Not Found")
+          (response/status 200 (response/json message)))))
+
+  (PUT "/message" {data :params}
+       (let [id (ephemeral/create-message data)]
+         (cond
+          (nil? id) (response/status 400 "Bad Request")
+          (response/status 201 (response/json {:success true :id id})))))
+
   (route/not-found "Not Found"))
 
 (def app
-  (handler/site app-routes))
+  (wrap-json-params (handler/api app-routes)))

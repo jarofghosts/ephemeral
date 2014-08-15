@@ -6,6 +6,7 @@
                  [lib-noir "0.8.4"]
                  [clj-time "0.8.0"]
                  [ring-server "0.3.1"]
+                 [ring/ring-json "0.3.1"]
                  [org.postgresql/postgresql "9.2-1002-jdbc4"]
                  [environ "0.5.0"]
                  [compojure "1.1.8"]]
