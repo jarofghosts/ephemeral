@@ -10,11 +10,11 @@
   (cond
    (nil? message) nil
 
-   :else (db/add-message (utils/create-uuid) message time views)))
+   :else (db/add-message! (utils/create-uuid) message time views)))
 
 (defn log-access [id]
   "log an access to the message"
-  (db/add-access id))
+  (db/add-access! id))
 
 (defn lookup-message [id]
   (let [{:keys [message expire views created accesses]} (db/get-message id)]
