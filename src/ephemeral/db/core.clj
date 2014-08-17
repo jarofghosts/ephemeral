@@ -1,7 +1,8 @@
 (ns ephemeral.db.core
   (:use [environ.core :only (env)])
   (:use korma.core)
-  (:use korma.db))
+  (:use korma.db)
+  (:require [ephemeral.utils :as utils]))
 
 (defdb db (postgres {:db (env :eph-db-name)
                      :user (env :eph-db-user)
@@ -23,8 +24,8 @@
                             :message message
                             :expire expire-time
                             :views expire-views
-                            :created (new java.util.Date)})))
+                            :created (utils/now)})))
 
 (defn add-access [id]
   (insert accesses (values {:id id
-                            :created (new java.util.Date)})))
+                            :created (utils/now)})))
