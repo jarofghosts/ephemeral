@@ -1,8 +1,9 @@
 (ns ephemeral.handler
-  (:use [ring.middleware.json :only [wrap-json-params]])
   (:require [compojure.core :refer :all]
             [compojure.handler :as handler]
+            [ring.middleware.json :refer [wrap-json-params]]
             [compojure.route :as route]
+            [ring.middleware.cors :refer [wrap-cors]]
             [ephemeral.core :as ephemeral]
             [noir.response :as response]))
 
@@ -24,4 +25,7 @@
   (route/not-found "Not Found"))
 
 (def app
-  (wrap-json-params (handler/api app-routes)))
+  (-> (handler/api app-routes)
+      (wrap-json-params)
+      (wrap-cors :access-control-allow-origin #".+"
+                 :access-control-allow-methods [:get :put :post :delete])))

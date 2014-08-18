@@ -7,6 +7,7 @@
                  [clj-time "0.8.0"]
                  [ring-server "0.3.1"]
                  [ring/ring-json "0.3.1"]
+                 [ring-cors "0.1.4"]
                  [postgresql "9.1-901.jdbc4"]
                  [lobos "1.0.0-beta1"]
                  [environ "0.5.0"]
