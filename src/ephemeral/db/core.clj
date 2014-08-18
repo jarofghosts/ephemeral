@@ -1,17 +1,19 @@
 (ns ephemeral.db.core
-  (:use [environ.core :only (env)])
   (:use korma.core)
   (:use korma.db)
+  (:require [ephemeral.db.schema :as schema])
+  (:require [environ.core :refer [env]])
   (:require [ephemeral.utils :as utils]))
 
-(defdb db (postgres {:db (env :eph-db-name)
-                     :user (env :eph-db-user)
-                     :password (env :eph-db-pass)}))
+(defdb db schema/db-spec)
 
-(defentity accesses)
+(declare messages)
+
+(defentity accesses
+  (belongs-to messages))
 
 (defentity messages
-  (has-many accesses))
+  (has-many accesses {:fk :message_id}))
 
 (defn get-message [id]
   (first (select messages
@@ -27,5 +29,5 @@
                             :created (utils/now)})))
 
 (defn add-access! [id]
-  (insert accesses (values {:id id
+  (insert accesses (values {:message_id id
                             :created (utils/now)})))

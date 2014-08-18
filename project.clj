@@ -7,10 +7,11 @@
                  [clj-time "0.8.0"]
                  [ring-server "0.3.1"]
                  [ring/ring-json "0.3.1"]
-                 [org.postgresql/postgresql "9.2-1002-jdbc4"]
+                 [postgresql "9.1-901.jdbc4"]
+                 [lobos "1.0.0-beta1"]
                  [environ "0.5.0"]
                  [compojure "1.1.8"]]
-  :plugins [[lein-ring "0.8.11"]]
+  :plugins [[lein-ring "0.8.11"] [lein-environ "1.0.0"]]
   :ring {:handler ephemeral.handler/app}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]

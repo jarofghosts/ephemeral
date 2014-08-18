@@ -24,5 +24,5 @@
           (and (not (nil? expire)) (utils/expired? expire)) nil
 
           :else (do
-                  (if-not (nil? views) (db/add-access id))
+                  (if-not (nil? views) (db/add-access! id))
                   {:message message :id id}))))

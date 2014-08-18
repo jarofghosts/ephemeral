@@ -19,7 +19,7 @@
        (let [id (ephemeral/create-message data)]
          (cond
           (nil? id) (response/status 400 "Bad Request")
-          :else (response/status 201 (response/json {:success true :id id})))))
+          :else (response/status 201 (response/json {:success true :id (:id id)})))))
 
   (route/not-found "Not Found"))
 
