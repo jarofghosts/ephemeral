@@ -1,9 +1,9 @@
 (ns ephemeral.db.core
   (:use korma.core)
-  (:use korma.db)
-  (:require [ephemeral.db.schema :as schema])
-  (:require [environ.core :refer [env]])
-  (:require [ephemeral.utils :as utils]))
+  (:require [korma.db :refer [defdb]]
+            [ephemeral.db.schema :as schema]
+            [environ.core :refer [env]]
+            [ephemeral.utils :as utils]))
 
 (defdb db schema/db-spec)
 

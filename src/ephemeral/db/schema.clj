@@ -1,8 +1,6 @@
 (ns ephemeral.db.schema
   (:require [environ.core :refer [env]]))
 
-(println (env :eph-db-user))
-
 (def full-db-uri
   (str (env :eph-db-location) "/" (env :eph-db-name)))
 

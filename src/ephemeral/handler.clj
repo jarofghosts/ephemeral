@@ -7,20 +7,28 @@
             [ephemeral.core :as ephemeral]
             [noir.response :as response]))
 
+(defn respond
+  ([body] (respond 200 body))
+  ([code body]
+  (->> body
+       (response/json)
+       (response/status code))))
+
 (defroutes app-routes
-  (GET "/" [] (response/status 200 (response/json (ephemeral/info))))
+  (GET "/" [] (respond (ephemeral/info)))
 
   (GET "/message/:id" [id]
        (let [message (ephemeral/lookup-message id)]
          (cond
           (nil? message) (response/status 404 "Not Found")
-          :else (response/status 200 (response/json message)))))
+          :else (respond message))))
 
   (PUT "/message" {data :params}
        (let [id (ephemeral/create-message data)]
          (cond
           (nil? id) (response/status 400 "Bad Request")
-          :else (response/status 201 (response/json {:success true :id (:id id)})))))
+          :else (respond 201 {:success true
+                              :id (:id id)}))))
 
   (route/not-found "Not Found"))
 
