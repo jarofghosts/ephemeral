@@ -20,9 +20,9 @@
   (let [{:keys [message expire views created accesses]} (db/get-message id)]
     (cond
           (nil? created) nil
-          (and (not (nil? views)) (>= (count accesses) views)) nil
-          (and (not (nil? expire)) (utils/expired? expire)) nil
+          (utils/views-expired? views accesses) nil
+          (utils/time-expired? expire) nil
 
           :else (do
-                  (if-not (nil? views) (db/add-access! id))
-                  {:message message :id id}))))
+                 (if-not (nil? views) (log-access id))
+                 {:message message :id id}))))

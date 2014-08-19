@@ -15,3 +15,9 @@
 (defn expired? [date-time]
   "determine if a message is expired"
   (t/after? (t/now) (f/parse formatter date-time)))
+
+(defn views-expired? [views accesses]
+  (and (not (nil? views)) (>= (count accesses) views)))
+
+(defn time-expired? [expires]
+  (and (not (nil? expires)) (expired? expires)))

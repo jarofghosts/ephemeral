@@ -9,7 +9,7 @@
                  [ring/ring-json "0.3.1"]
                  [ring-cors "0.1.4"]
                  [postgresql "9.1-901.jdbc4"]
-                 [lobos "1.0.0-beta1"]
+                 [lobos "1.0.0-beta3"]
                  [environ "0.5.0"]
                  [compojure "1.1.8"]]
   :plugins [[lein-ring "0.8.11"] [lein-environ "1.0.0"]]
