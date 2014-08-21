@@ -1,5 +1,7 @@
 # ephemeral
 
+[![Build Status](http://img.shields.io/travis/jarofghosts/ephemeral.svg?style=flat)](https://travis-ci.org/jarofghosts/ephemeral)
+
 self-destructing messages
 
 ## prerequisites
