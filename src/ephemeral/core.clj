@@ -7,7 +7,9 @@
   []
   {:version "0.1.0" :name "ephemeral"})
 
-(defn create-message [{:keys [message time views]}]
+(defn create-message
+  "adds message to db as long as there is at least a message"
+  [{:keys [message time views]}]
   (cond
    (nil? message) nil
 
@@ -28,5 +30,5 @@
           (utils/time-expired? expire) nil
 
           :else (do
-                 (if-not (nil? views) (log-access id))
-                 {:message message :id id}))))
+                  (if-not (nil? views) (log-access id))
+                  {:message message :id id}))))
