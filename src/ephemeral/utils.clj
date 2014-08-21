@@ -4,17 +4,21 @@
 
 (def formatter (f/formatters :basic-date-time))
 
-(defn create-uuid []
+(defn create-uuid
   "create a random UUID"
+  []
   (str (java.util.UUID/randomUUID)))
 
-(defn now []
+(defn now
   "return a date string for now"
+  []
   (f/unparse formatter (t/now)))
 
-(defn expired? [date-time]
+(defn expired?
   "determine if a message is expired"
-  (t/after? (t/now) (f/parse formatter date-time)))
+  ([date-time] expired? date-time (t/now))
+  ([date-time start-time]
+    (t/after? start-time (f/parse formatter date-time))))
 
 (defn views-expired? [views accesses]
   (and (not (nil? views)) (>= (count accesses) views)))

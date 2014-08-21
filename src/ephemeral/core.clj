@@ -2,8 +2,9 @@
   (:require [ephemeral.db.core :as db]
             [ephemeral.utils :as utils]))
 
-(defn info []
+(defn info
   "returns info"
+  []
   {:version "0.1.0" :name "ephemeral"})
 
 (defn create-message [{:keys [message time views]}]
@@ -12,11 +13,14 @@
 
    :else (db/add-message! (utils/create-uuid) message time views)))
 
-(defn log-access [id]
+(defn log-access
   "log an access to the message"
+  [id]
   (db/add-access! id))
 
-(defn lookup-message [id]
+(defn lookup-message
+  "attempt to load message, gated by expirations"
+  [id]
   (let [{:keys [message expire views created accesses]} (db/get-message id)]
     (cond
           (nil? created) nil
