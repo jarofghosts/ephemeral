@@ -21,7 +21,7 @@
     (t/after? start-time (f/parse formatter date-time))))
 
 (defn views-expired? [views accesses]
-  (and (not (nil? views)) (>= (count accesses) views)))
+  (and (not (nil? views)) (>= accesses views)))
 
 (defn time-expired? [expires]
   (and (not (nil? expires)) (expired? expires)))

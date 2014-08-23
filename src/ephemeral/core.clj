@@ -5,7 +5,7 @@
 (defn info
   "returns info"
   []
-  {:version "0.1.0" :name "ephemeral"})
+  {:version "0.1.1" :name "ephemeral"})
 
 (defn create-message
   "adds message to db as long as there is at least a message"

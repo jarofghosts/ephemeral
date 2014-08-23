@@ -1,33 +1,27 @@
 (ns ephemeral.db.core
-  (:use korma.core)
-  (:require [korma.db :refer [defdb]]
-            [ephemeral.db.schema :as schema]
-            [environ.core :refer [env]]
+  (:require [taoensso.carmine :as redis]
             [ephemeral.utils :as utils]))
 
-(defdb db schema/db-spec)
+(defn- redis-set [k v]
+  (redis/wcar nil (redis/set k v)))
 
-(declare messages)
+(defn- redis-get [k]
+  (redis/wcar nil (redis/get k)))
 
-(defentity accesses
-  (belongs-to messages))
-
-(defentity messages
-  (has-many accesses {:fk :message_id}))
+(defn- inc-accesses [message]
+  (assoc message :accesses (inc (:accesses message 0))))
 
 (defn get-message [id]
-  (first (select messages
-                 (with accesses)
-                 (where {:id id})
-                 (limit 1))))
+  (redis-get id))
 
 (defn add-message! [id message expire-time expire-views]
-  (insert messages (values {:id id
-                            :message message
-                            :expire expire-time
-                            :views expire-views
-                            :created (utils/now)})))
+  (redis-set id {:message message
+                 :expire expire-time
+                 :accesses 0
+                 :views expire-views
+                 :created (utils/now)})
+  id)
 
 (defn add-access! [id]
-  (insert accesses (values {:message_id id
-                            :created (utils/now)})))
+  (let [message (redis-get id)]
+    (redis-set id (inc-accesses message))))
