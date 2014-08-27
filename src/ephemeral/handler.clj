@@ -18,16 +18,14 @@
   (GET "/" [] (respond (ephemeral/info)))
 
   (GET "/message/:id" [id]
-       (let [message (ephemeral/lookup-message id)]
-         (cond
-          (nil? message) (response/status 404 "Not Found")
-          :else (respond message))))
+       (if-let [message (ephemeral/lookup-message id)]
+          (respond message)
+          (response/status 404 "Not Found")))
 
   (PUT "/message" {data :params}
-       (let [id (ephemeral/create-message data)]
-         (cond
-          (nil? id) (response/status 400 "Bad Request")
-          :else (respond 201 {:success true :id id}))))
+       (if-let [id (ephemeral/create-message data)]
+          (respond 201 {:success true :id id})
+          (response/status 400 "Bad Request")))
 
   (route/not-found "Not Found"))
 
