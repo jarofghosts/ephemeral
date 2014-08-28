@@ -10,10 +10,8 @@
 (defn create-message
   "adds message to db as long as there is at least a message"
   [{:keys [message time views]}]
-  (cond
-   (nil? message) nil
-
-   :else (db/add-message! (utils/create-uuid) message time views)))
+  (if (nil? message) nil
+    (db/add-message! (utils/create-uuid) message time views)))
 
 (defn log-access
   "log an access to the message"
